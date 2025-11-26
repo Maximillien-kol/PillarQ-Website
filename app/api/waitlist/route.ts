@@ -1,25 +1,32 @@
 import { NextResponse } from 'next/server'
-import { Resend } from 'resend'
-
-const resend = new Resend(process.env.RESEND_API_KEY)
+import nodemailer from 'nodemailer'
 
 export async function POST(request: Request) {
-    try {
-        const { email } = await request.json()
+  try {
+    const { email } = await request.json()
 
-        if (!email) {
-            return NextResponse.json(
-                { error: 'Email is required' },
-                { status: 400 }
-            )
-        }
+    if (!email) {
+      return NextResponse.json(
+        { error: 'Email is required' },
+        { status: 400 }
+      )
+    }
 
-        // Send notification email to admin
-        const { data, error } = await resend.emails.send({
-            from: 'PillarQ Waitlist <onboarding@resend.dev>', // Use verified domain in production
-            to: ['bagiramaximillien@gmail.com'],
-            subject: '🎉 New Waitlist Signup - PillarQ',
-            html: `
+    // Create a transporter using your Gmail account
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.SMTP_EMAIL, // Your Gmail address
+        pass: process.env.SMTP_PASSWORD, // Your Gmail App Password
+      },
+    })
+
+    // Email content
+    const mailOptions = {
+      from: process.env.SMTP_EMAIL,
+      to: 'bagiramaximillien@gmail.com', // Where you want to receive notifications
+      subject: '🎉 New Waitlist Signup - PillarQ',
+      html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333;">New Waitlist Signup!</h2>
           <p style="font-size: 16px; color: #666;">
@@ -35,25 +42,20 @@ export async function POST(request: Request) {
           </p>
         </div>
       `,
-        })
-
-        if (error) {
-            console.error('Error sending email:', error)
-            return NextResponse.json(
-                { error: 'Failed to send email' },
-                { status: 500 }
-            )
-        }
-
-        return NextResponse.json(
-            { message: 'Email submitted successfully', data },
-            { status: 200 }
-        )
-    } catch (error) {
-        console.error('Error processing request:', error)
-        return NextResponse.json(
-            { error: 'Internal server error' },
-            { status: 500 }
-        )
     }
+
+    // Send the email
+    await transporter.sendMail(mailOptions)
+
+    return NextResponse.json(
+      { message: 'Email submitted successfully' },
+      { status: 200 }
+    )
+  } catch (error) {
+    console.error('Error sending email:', error)
+    return NextResponse.json(
+      { error: 'Failed to send email' },
+      { status: 500 }
+    )
+  }
 }
