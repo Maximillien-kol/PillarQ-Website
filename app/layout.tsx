@@ -1,19 +1,32 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
+import { Inter, IBM_Plex_Sans, Roboto_Flex } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 
-const _geist = Geist({ subsets: ["latin"] })
-const _geistMono = Geist_Mono({ subsets: ["latin"] })
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+})
+
+const ibmPlexSans = IBM_Plex_Sans({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-ibm-plex-sans",
+})
+
+const robotoFlex = Roboto_Flex({
+  subsets: ["latin"],
+  variable: "--font-roboto-flex",
+})
 
 export const metadata: Metadata = {
-  title: "PillarQ - Coming Soon",
-  description: "Build stronger foundations for your business with intelligent automation and insights.",
-  generator: "v0.app",
+  title: "PillarHome - Manage Rentals With Clarity, Control, and Confidence",
+  description: "PillarQ helps landlords and property teams automate rent collection, track tenants, and manage properties from a modern, secure platform built for the Rwandan market.",
+  generator: "pillarh",
   icons: {
-    icon: "/pillarq.png",
-    apple: "/pillarq.png",
+    icon: "/favicon.svg",
+    apple: "/favicon.svg",
   },
 }
 
@@ -24,7 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`font-sans antialiased`}>
+      <body className={`${inter.variable} ${ibmPlexSans.variable} ${robotoFlex.variable} font-sans antialiased`}>
         {children}
         <Analytics />
       </body>

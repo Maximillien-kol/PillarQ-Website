@@ -25,12 +25,12 @@ export async function POST(request: Request) {
     const mailOptions = {
       from: process.env.SMTP_EMAIL,
       to: 'bagiramaximillien@gmail.com', // Where you want to receive notifications
-      subject: '🎉 New Waitlist Signup - PillarQ',
+      subject: '🎉 New Waitlist Signup - PillarH',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333;">New Waitlist Signup!</h2>
           <p style="font-size: 16px; color: #666;">
-            Someone just joined the PillarQ waitlist:
+            Someone just joined the PillarH waitlist:
           </p>
           <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <p style="margin: 0; font-size: 18px; color: #333;">
